@@ -71,7 +71,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               </span>
             </div>
             <p className="text-xs text-zinc-400 mt-0.5">
-              即時使用量與額度配額監控
+              {t.keySubtitle}
             </p>
           </div>
         </div>
@@ -97,10 +97,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <StatCard
           title={t.totalSpent}
           value={formatCurrency(totalCost)}
-          subtitle={`總額度: ${totalLimit > 0 ? formatCurrency(totalLimit) : "無上限"}`}
+          subtitle={`${t.totalLimitPrefix}: ${totalLimit > 0 ? formatCurrency(totalLimit) : t.noLimit}`}
           icon={DollarSign}
           badge={{
-            text: `已用 ${percentUsed}%`,
+            text: `${t.usedPercent} ${percentUsed}%`,
             variant: Number(percentUsed) > 85 ? "rose" : "amber",
           }}
           accentColor="amber"
@@ -109,11 +109,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
         {/* Remaining Budget */}
         <StatCard
           title={t.remainingBudget}
-          value={totalLimit > 0 ? formatCurrency(remainingCost) : "無上限"}
-          subtitle="可繼續消耗額度"
+          value={totalLimit > 0 ? formatCurrency(remainingCost) : "∞"}
+          subtitle={t.remainingSubtitle}
           icon={TrendingDown}
           badge={{
-            text: data.isActive ? "額度充裕" : "暫停",
+            text: data.isActive ? t.budgetAmple : t.budgetSuspended,
             variant: "emerald",
           }}
           accentColor="emerald"
@@ -123,10 +123,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <StatCard
           title={t.totalTokens}
           value={formatCompactNumber(totalTokens)}
-          subtitle={`精密計數: ${formatNumber(totalTokens)}`}
+          subtitle={`${t.tokensExactPrefix}: ${formatNumber(totalTokens)}`}
           icon={Layers}
           badge={{
-            text: `${formatNumber(requests)} 請求`,
+            text: `${formatNumber(requests)} ${t.requestsCountSuffix}`,
             variant: "blue",
           }}
           accentColor="blue"
@@ -136,10 +136,10 @@ export const Dashboard: React.FC<DashboardProps> = ({
         <StatCard
           title={t.avgCostPerReq}
           value={formatCurrency(avgCostPerReq, 4)}
-          subtitle={data.isActive ? "金鑰狀態正常" : "金鑰已停用"}
+          subtitle={data.isActive ? t.keyNormal : t.keyInactive}
           icon={Zap}
           badge={{
-            text: data.isActive ? "ACTIVE" : "INACTIVE",
+            text: data.isActive ? t.activeStatus : t.inactiveStatus,
             variant: data.isActive ? "emerald" : "rose",
           }}
           accentColor={data.isActive ? "emerald" : "amber"}

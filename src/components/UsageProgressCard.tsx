@@ -4,7 +4,7 @@ import React from "react";
 import { ApiStatsData } from "@/types/stats";
 import { Language, translations } from "@/lib/i18n";
 import { formatCurrency } from "@/lib/utils";
-import { DollarSign, Wallet, Gauge, CalendarClock, ShieldAlert } from "lucide-react";
+import { Wallet, Gauge, CalendarClock, ShieldAlert } from "lucide-react";
 
 interface UsageProgressCardProps {
   data: ApiStatsData;
@@ -47,8 +47,8 @@ export const UsageProgressCard: React.FC<UsageProgressCardProps> = ({
               </h3>
               <p className="text-xs text-zinc-400">
                 {hasLimit
-                  ? `總預算限額: ${formatCurrency(limitCost)}`
-                  : "目前無總額度上限限制"}
+                  ? `${t.budgetLimitPrefix}${formatCurrency(limitCost)}`
+                  : t.noBudgetLimit}
               </p>
             </div>
           </div>
@@ -64,9 +64,9 @@ export const UsageProgressCard: React.FC<UsageProgressCardProps> = ({
         {/* Progress Display */}
         <div className="mt-5 space-y-2">
           <div className="flex justify-between items-baseline">
-            <span className="text-xs text-zinc-400">已使用比例</span>
+            <span className="text-xs text-zinc-400">{t.usedRatio}</span>
             <span className="text-sm font-mono font-bold text-amber-400">
-              {hasLimit ? `${percentUsed.toFixed(1)}%` : "0% (無上限)"}
+              {hasLimit ? `${percentUsed.toFixed(1)}%` : t.unlimitedParen}
             </span>
           </div>
 
@@ -93,7 +93,7 @@ export const UsageProgressCard: React.FC<UsageProgressCardProps> = ({
             <div>
               <span className="text-zinc-500">{t.totalLimit}: </span>
               <span className="text-white font-semibold">
-                {hasLimit ? formatCurrency(limitCost) : "不設限"}
+                {hasLimit ? formatCurrency(limitCost) : t.noLimit}
               </span>
             </div>
           </div>
@@ -112,7 +112,7 @@ export const UsageProgressCard: React.FC<UsageProgressCardProps> = ({
             {dailyLimit > 0 ? formatCurrency(dailyLimit) : t.unlimited}
           </div>
           <div className="text-[10px] text-zinc-500 font-mono mt-0.5">
-            今日已耗: {formatCurrency(dailySpent)}
+            {t.dailySpentPrefix}{formatCurrency(dailySpent)}
           </div>
         </div>
 
@@ -126,7 +126,7 @@ export const UsageProgressCard: React.FC<UsageProgressCardProps> = ({
             {weeklyOpusLimit > 0 ? formatCurrency(weeklyOpusLimit) : t.unlimited}
           </div>
           <div className="text-[10px] text-zinc-500 font-mono mt-0.5">
-            本週已用: {formatCurrency(weeklyOpusCost)}
+            {t.weeklySpentPrefix}{formatCurrency(weeklyOpusCost)}
           </div>
         </div>
 
@@ -142,11 +142,10 @@ export const UsageProgressCard: React.FC<UsageProgressCardProps> = ({
               : t.unlimited}
           </div>
           <div className="text-[10px] text-zinc-500 font-mono mt-0.5">
-            並發保護已就緒
+            {t.concurrencyReady}
           </div>
         </div>
       </div>
     </div>
   );
 };
-

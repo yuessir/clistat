@@ -34,7 +34,7 @@ export const RestrictionsCard: React.FC<RestrictionsCardProps> = ({
               {t.restrictionsTitle}
             </h3>
             <p className="text-xs text-zinc-400">
-              包含受限制無法呼叫之模型，以及客戶端許可清單
+              {t.restrictionsSubtitle}
             </p>
           </div>
         </div>
@@ -48,7 +48,11 @@ export const RestrictionsCard: React.FC<RestrictionsCardProps> = ({
                 : "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
             }`}
           >
-            <span>{restrictions.enableModelRestriction ? "模型限制已啟用" : "模型無限制"}</span>
+            <span>
+              {restrictions.enableModelRestriction
+                ? t.modelRestrictionActive
+                : t.modelRestrictionDisabled}
+            </span>
           </span>
 
           <span
@@ -60,8 +64,8 @@ export const RestrictionsCard: React.FC<RestrictionsCardProps> = ({
           >
             <span>
               {restrictions.enableClientRestriction
-                ? "客戶端白名單啟用"
-                : "客戶端無限制"}
+                ? t.clientRestrictionActive
+                : t.clientRestrictionDisabled}
             </span>
           </span>
         </div>
@@ -75,7 +79,7 @@ export const RestrictionsCard: React.FC<RestrictionsCardProps> = ({
               <Box className="w-4 h-4 text-amber-400" />
               <span>{t.restrictedModelsTitle}</span>
               <span className="text-[11px] font-mono text-zinc-500 ml-1">
-                ({models.length} 個模型受限)
+                ({models.length} {t.modelsRestrictedCount})
               </span>
             </div>
 
@@ -84,7 +88,7 @@ export const RestrictionsCard: React.FC<RestrictionsCardProps> = ({
                 <Search className="w-3.5 h-3.5 absolute left-2.5 top-2 text-zinc-500" />
                 <input
                   type="text"
-                  placeholder="搜尋模型名稱..."
+                  placeholder={t.searchModelPlaceholder}
                   value={filterQuery}
                   onChange={(e) => setFilterQuery(e.target.value)}
                   className="bg-white/[0.03] border border-white/[0.08] rounded-lg pl-8 pr-3 py-1 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-amber-500/50"
@@ -104,12 +108,12 @@ export const RestrictionsCard: React.FC<RestrictionsCardProps> = ({
                 </span>
               ))}
               {filteredModels.length === 0 && (
-                <span className="text-xs text-zinc-500 p-2">未找到符合的模型</span>
+                <span className="text-xs text-zinc-500 p-2">{t.noMatchingModels}</span>
               )}
             </div>
           ) : (
             <div className="p-3 text-xs text-emerald-400 rounded-xl bg-emerald-500/5 border border-emerald-500/20">
-              無受限模型，可自由呼叫全體模型
+              {t.noRestrictedModels}
             </div>
           )}
         </div>
@@ -145,4 +149,3 @@ export const RestrictionsCard: React.FC<RestrictionsCardProps> = ({
     </div>
   );
 };
-

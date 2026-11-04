@@ -49,7 +49,7 @@ export const AccountInfoCard: React.FC<AccountInfoCardProps> = ({
             <h3 className="text-base font-semibold text-white">
               {t.accountInfoTitle}
             </h3>
-            <p className="text-xs text-zinc-400">金鑰有效性與專屬服務節點狀態</p>
+            <p className="text-xs text-zinc-400">{t.accountInfoSubtitle}</p>
           </div>
         </div>
 
@@ -71,7 +71,7 @@ export const AccountInfoCard: React.FC<AccountInfoCardProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5 text-xs">
         {/* Left Column: Key metadata */}
         <div className="space-y-3.5">
-          {/* Key Name (description is removed per user request) */}
+          {/* Key Name */}
           <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.05]">
             <div className="text-[11px] text-zinc-500">{t.keyName}</div>
             <div className="text-sm font-semibold text-white mt-0.5">
@@ -91,12 +91,12 @@ export const AccountInfoCard: React.FC<AccountInfoCardProps> = ({
                 {copiedField === "id" ? (
                   <>
                     <Check className="w-3 h-3 text-emerald-400" />
-                    <span className="text-emerald-400">已複製</span>
+                    <span className="text-emerald-400">{t.copied}</span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-3 h-3" />
-                    <span>複製</span>
+                    <span>{t.copy}</span>
                   </>
                 )}
               </button>
@@ -114,7 +114,7 @@ export const AccountInfoCard: React.FC<AccountInfoCardProps> = ({
                 <span>{t.createdAt}</span>
               </div>
               <div className="text-[11px] font-mono text-zinc-300 mt-1">
-                {formatDate(data.createdAt)}
+                {formatDate(data.createdAt, currentLang)}
               </div>
             </div>
             <div>
@@ -123,7 +123,7 @@ export const AccountInfoCard: React.FC<AccountInfoCardProps> = ({
                 <span>{t.expiresAt}</span>
               </div>
               <div className="text-[11px] font-mono text-zinc-300 mt-1">
-                {formatDate(data.expiresAt)}
+                {formatDate(data.expiresAt, currentLang)}
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ export const AccountInfoCard: React.FC<AccountInfoCardProps> = ({
         {/* Right Column: Gateway Provider Group Accounts */}
         <div className="space-y-3.5">
           <div className="text-[11px] font-mono text-zinc-400 uppercase tracking-wider">
-            底層服務節點群組 (Service Groups)
+            {t.serviceGroupsTitle}
           </div>
 
           {/* Claude Account */}

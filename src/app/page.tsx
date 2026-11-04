@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Language, translations } from "@/lib/i18n";
 import { ApiStatsData } from "@/types/stats";
 import { Header } from "@/components/Header";
@@ -16,12 +16,34 @@ import {
 } from "lucide-react";
 
 export default function HomePage() {
-  const [currentLang, setCurrentLang] = useState<Language>("zh-TW");
+  // Default to English per user request
+  const [currentLang, setCurrentLang] = useState<Language>("en");
   const [statsData, setStatsData] = useState<ApiStatsData | null>(null);
   const [apiId, setApiId] = useState<string>("");
   const [currentKey, setCurrentKey] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  // Load user's saved language preference if any, otherwise default to "en"
+  useEffect(() => {
+    try {
+      const savedLang = localStorage.getItem("preferred_lang") as Language;
+      if (savedLang && (savedLang === "en" || savedLang === "zh-TW" || savedLang === "zh-CN")) {
+        setCurrentLang(savedLang);
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  const handleLanguageChange = (lang: Language) => {
+    setCurrentLang(lang);
+    try {
+      localStorage.setItem("preferred_lang", lang);
+    } catch {
+      // ignore
+    }
+  };
 
   const t = translations[currentLang];
 
@@ -50,7 +72,7 @@ export default function HomePage() {
         setStatsData(json.data);
         setApiId(json.apiId || json.data?.id || "");
       }
-    } catch (err: any) {
+    } catch {
       setErrorMessage(t.networkError);
       setStatsData(null);
     } finally {
@@ -67,7 +89,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Top Header with Lang switch */}
-      <Header currentLang={currentLang} onLanguageChange={setCurrentLang} />
+      <Header currentLang={currentLang} onLanguageChange={handleLanguageChange} />
 
       {/* Main Content Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 sm:space-y-10">
@@ -75,7 +97,7 @@ export default function HomePage() {
         <div className="text-center space-y-3 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-mono uppercase tracking-widest">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>AI Gateway · Stat Monitor</span>
+            <span>{t.heroBadge}</span>
           </div>
 
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
@@ -147,10 +169,10 @@ export default function HomePage() {
                 <BarChart3 className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-white text-sm">
-                即時餘額與花費統計
+                {t.feature1Title}
               </h3>
               <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
-                直觀查看已消耗金額、總額度上限、剩餘金額，避免工作流超支中斷。
+                {t.feature1Desc}
               </p>
             </div>
 
@@ -159,10 +181,10 @@ export default function HomePage() {
                 <Layers className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-white text-sm">
-                Prompt Cache 節省分析
+                {t.feature2Title}
               </h3>
               <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
-                拆解輸入/輸出與快取讀取（Cache Read），精準掌握 90% 省錢效率。
+                {t.feature2Desc}
               </p>
             </div>
 
@@ -171,10 +193,10 @@ export default function HomePage() {
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <h3 className="font-semibold text-white text-sm">
-                模型受限與頻率控制
+                {t.feature3Title}
               </h3>
               <p className="text-xs text-zinc-400 mt-1.5 leading-relaxed">
-                自動列出金鑰允許或受限制之模型、並發限制與每週重設週期。
+                {t.feature3Desc}
               </p>
             </div>
           </div>

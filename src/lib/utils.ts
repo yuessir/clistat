@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Language } from "./i18n";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -32,12 +33,17 @@ export function formatCurrency(amount: number | undefined | null, digits: number
   })}`;
 }
 
-export function formatDate(dateString: string | undefined | null): string {
-  if (!dateString) return "無 (永不過期 / 未設定)";
+export function formatDate(dateString: string | undefined | null, lang: Language = "en"): string {
+  if (!dateString) {
+    if (lang === "en") return "Never expires / Unset";
+    if (lang === "zh-CN") return "无 (永不过期 / 未设置)";
+    return "無 (永不過期 / 未設定)";
+  }
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return dateString;
-    return date.toLocaleString("zh-TW", {
+    const locale = lang === "en" ? "en-US" : lang === "zh-CN" ? "zh-CN" : "zh-TW";
+    return date.toLocaleString(locale, {
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
@@ -56,4 +62,3 @@ export function maskApiKey(key: string): string {
   if (key.length <= 12) return key;
   return `${key.slice(0, 7)}...${key.slice(-6)}`;
 }
-

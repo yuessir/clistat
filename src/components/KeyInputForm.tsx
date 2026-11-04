@@ -63,7 +63,7 @@ export const KeyInputForm: React.FC<KeyInputFormProps> = ({
     const cleanKey = apiKey.trim();
 
     if (!cleanKey) {
-      setValidationError("請輸入 API Key");
+      setValidationError(t.enterKeyPrompt);
       return;
     }
 
@@ -109,7 +109,7 @@ export const KeyInputForm: React.FC<KeyInputFormProps> = ({
             <label className="block text-xs font-mono uppercase tracking-wider text-amber-400/90 mb-2 flex items-center justify-between">
               <span className="flex items-center gap-1.5">
                 <Key className="w-3.5 h-3.5" />
-                API Key (cr_...)
+                {t.inputLabel}
               </span>
             </label>
 

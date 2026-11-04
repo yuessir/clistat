@@ -28,7 +28,7 @@ export const TokenDistributionCard: React.FC<TokenDistributionCardProps> = ({
   const cacheCreatePct = ((cacheCreate / total) * 100).toFixed(1);
   const cacheReadPct = ((cacheRead / total) * 100).toFixed(1);
 
-  // 快取效率比率
+  // Cache efficiency ratio
   const cacheTotal = cacheCreate + cacheRead;
   const cacheEffectiveness = cacheTotal > 0
     ? ((cacheRead / cacheTotal) * 100).toFixed(1)
@@ -53,7 +53,7 @@ export const TokenDistributionCard: React.FC<TokenDistributionCardProps> = ({
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs font-medium font-mono">
             <Zap className="w-3.5 h-3.5" />
-            <span>總額: {formatCompactNumber(total)} Tokens</span>
+            <span>{t.totalLabel}: {formatCompactNumber(total)} Tokens</span>
           </span>
         </div>
       </div>
@@ -62,22 +62,22 @@ export const TokenDistributionCard: React.FC<TokenDistributionCardProps> = ({
       <div className="mt-5 space-y-2">
         <div className="w-full h-4 bg-zinc-900/90 rounded-lg overflow-hidden flex p-0.5 border border-white/[0.08]">
           <div
-            title={`輸入: ${inputPct}%`}
+            title={`${t.inputTokens}: ${inputPct}%`}
             style={{ width: `${inputPct}%` }}
             className="h-full bg-blue-500 rounded-l transition-all duration-700 hover:opacity-90"
           />
           <div
-            title={`輸出: ${outputPct}%`}
+            title={`${t.outputTokens}: ${outputPct}%`}
             style={{ width: `${outputPct}%` }}
             className="h-full bg-emerald-500 transition-all duration-700 hover:opacity-90"
           />
           <div
-            title={`快取建立: ${cacheCreatePct}%`}
+            title={`${t.cacheCreateTokens}: ${cacheCreatePct}%`}
             style={{ width: `${cacheCreatePct}%` }}
             className="h-full bg-amber-500 transition-all duration-700 hover:opacity-90"
           />
           <div
-            title={`快取讀取: ${cacheReadPct}%`}
+            title={`${t.cacheReadTokens}: ${cacheReadPct}%`}
             style={{ width: `${cacheReadPct}%` }}
             className="h-full bg-purple-500 rounded-r transition-all duration-700 hover:opacity-90"
           />
@@ -111,7 +111,7 @@ export const TokenDistributionCard: React.FC<TokenDistributionCardProps> = ({
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-400 flex items-center gap-1">
               <ArrowDownToLine className="w-3.5 h-3.5 text-blue-400" />
-              <span>輸入 Token</span>
+              <span>{t.inputTokens}</span>
             </span>
             <span className="text-[10px] font-mono text-blue-400">{inputPct}%</span>
           </div>
@@ -128,7 +128,7 @@ export const TokenDistributionCard: React.FC<TokenDistributionCardProps> = ({
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-400 flex items-center gap-1">
               <ArrowUpFromLine className="w-3.5 h-3.5 text-emerald-400" />
-              <span>輸出 Token</span>
+              <span>{t.outputTokens}</span>
             </span>
             <span className="text-[10px] font-mono text-emerald-400">{outputPct}%</span>
           </div>
@@ -145,7 +145,7 @@ export const TokenDistributionCard: React.FC<TokenDistributionCardProps> = ({
           <div className="flex items-center justify-between">
             <span className="text-xs text-zinc-400 flex items-center gap-1">
               <Database className="w-3.5 h-3.5 text-amber-400" />
-              <span>快取建立</span>
+              <span>{t.cacheCreateTokens}</span>
             </span>
             <span className="text-[10px] font-mono text-amber-400">{cacheCreatePct}%</span>
           </div>
@@ -162,7 +162,7 @@ export const TokenDistributionCard: React.FC<TokenDistributionCardProps> = ({
           <div className="flex items-center justify-between">
             <span className="text-xs text-purple-300 flex items-center gap-1">
               <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-              <span>快取命中 (讀取)</span>
+              <span>{t.cacheReadTokens}</span>
             </span>
             <span className="text-[10px] font-mono text-purple-400">{cacheReadPct}%</span>
           </div>
@@ -179,14 +179,14 @@ export const TokenDistributionCard: React.FC<TokenDistributionCardProps> = ({
       <div className="mt-4 p-3 rounded-xl bg-purple-950/20 border border-purple-500/20 flex items-start gap-2.5 text-xs text-zinc-300">
         <Sparkles className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
         <div className="flex-1">
-          <span className="font-semibold text-purple-300">Prompt Cache 節省加乘：</span>
+          <span className="font-semibold text-purple-300">{t.cacheBenefitTitle}</span>
           <span className="text-zinc-400 ml-1">
-            本金鑰共從快取直接讀取了 <strong className="text-purple-300 font-mono">{formatNumber(cacheRead)}</strong> Tokens (命中效率 {cacheEffectiveness}%)，
-            相較於全量無快取模式，節省了將近 90% 的輸入費用！
+            {t.cacheBenefitDesc1}
+            <strong className="text-purple-300 font-mono">{formatNumber(cacheRead)}</strong> ({cacheEffectiveness}%)
+            {t.cacheBenefitDesc2}
           </span>
         </div>
       </div>
     </div>
   );
 };
-
